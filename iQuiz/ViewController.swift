@@ -12,7 +12,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var titles : [String] = ["Mathematics", "Marvel Superheros", "Science"]
     var descriptions : [String] = ["Math Quiz", "Marvel Superhero Quiz", "Science Quiz"]
     var icons : [String] = ["math", "marvel", "science"]
-    
+    var quizNum : Int = -1
+    var quiz : [[(question: String, answer: Int, answers: [String])]] =
+        [[(question: "math question 1?", answer: 1, answers: ["one", "two", "three", "four"]),
+          (question: "math question 2?", answer: 2, answers: ["one2", "two2", "three2", "four2"])],
+         [(question: "marvel question 1?", answer: 1, answers: ["one", "two", "three", "four"])],
+         [(question: "science question 1?", answer: 1, answers: ["one", "two", "three", "four"])]]
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
     }
@@ -23,6 +28,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.detailTextLabel?.text = self.descriptions[indexPath.row]
         cell.imageView?.image = UIImage(named: self.icons[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.quizNum = indexPath.row
+        performSegue(withIdentifier: "quiz", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let questionVC: QuestionViewController = segue.destination as! QuestionViewController
+        questionVC.quizTitle = self.titles[self.quizNum]
+        questionVC.quizDescription = self.descriptions[self.quizNum]
+        questionVC.curQuestion = 0
+        questionVC.quiz = self.quiz[self.quizNum]
     }
     
     @IBAction func Settings(_ sender: Any) {
