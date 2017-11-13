@@ -14,8 +14,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var icons : [String] = ["math", "marvel", "science"]
     var quizNum : Int = -1
     var quiz : [[(question: String, answer: Int, answers: [String])]] =
-        [[(question: "math question 1?", answer: 1, answers: ["one", "two", "three", "four"]),
-          (question: "math question 2?", answer: 2, answers: ["one2", "two2", "three2", "four2"])],
+        [[(question: "math question 1?", answer: 0, answers: ["this is the answer", "two", "three", "four"]),
+          (question: "math question 2?", answer: 1, answers: ["one2", "this is the answer2", "three2", "four2"])],
          [(question: "marvel question 1?", answer: 1, answers: ["one", "two", "three", "four"])],
          [(question: "science question 1?", answer: 1, answers: ["one", "two", "three", "four"])]]
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

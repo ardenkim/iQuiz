@@ -13,6 +13,8 @@ class QuestionViewController: UIViewController, UITableViewDelegate, UITableView
     var quizDescription : String = ""
     var quiz = [(question: String, answer: Int, answers: [String])]()
     var curQuestion = -1
+    var correct = 0
+    var userAnswer = -1
     
     @IBOutlet weak var quizName: UILabel!
     @IBOutlet weak var quizDesc: UILabel!
@@ -42,6 +44,26 @@ class QuestionViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func submitClicked(_ sender: Any) {
+        if userAnswer != -1 {
+            if userAnswer == quiz[curQuestion].answer {
+                correct = correct + 1
+            }
+            performSegue(withIdentifier: "answer", sender: self)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let answerVC: AnswerViewController = segue.destination as! AnswerViewController
+        answerVC.quizTitle = self.quizTitle
+        answerVC.quizDescription = self.quizDescription
+        answerVC.curQuestion = self.curQuestion
+        answerVC.quiz = self.quiz
+        answerVC.correct = self.correct
+        answerVC.userAnswer = self.userAnswer
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.userAnswer = indexPath.row
     }
 
     /*
