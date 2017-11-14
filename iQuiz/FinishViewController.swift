@@ -8,8 +8,8 @@
 import UIKit
 
 class FinishViewController: UIViewController {
-    var result: String = ""
-    var desc: String = ""
+    var correct = 0
+    var total = 0
     
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var resultLabel: UILabel!
@@ -22,9 +22,18 @@ class FinishViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var desc = ""
+        if correct == total {
+            desc = "Perfect!"
+        } else if Double(correct) / Double(total) > 0.7 {
+            desc = "Almost!"
+        } else {
+            desc = "Try again!"
+        }
 
         descriptionLabel.text = desc
-        resultLabel.text = result
+        resultLabel.text = "You got \(correct) out of \(total)!"
     }
 
     override func didReceiveMemoryWarning() {

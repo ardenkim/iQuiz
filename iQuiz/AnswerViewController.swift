@@ -43,12 +43,8 @@ class AnswerViewController: UIViewController {
             questionVC.userAnswer = -1
         } else {
             let finishVC: FinishViewController = segue.destination as! FinishViewController
-            finishVC.result = "You got \(correct) out of \(quiz.count)!"
-            if correct == quiz.count {
-                finishVC.desc = "Perfect!"
-            } else {
-                finishVC.desc = "Almost!"
-            }
+            finishVC.correct = correct
+            finishVC.total = quiz.count
         }
     }
     
