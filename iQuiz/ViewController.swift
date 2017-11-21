@@ -13,15 +13,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var sourceURL: String = ""
     var questions : [[String:Any]]?
     var selectedQuestionList : [Any]?
-//    var titles : [String] = ["Mathematics", "Marvel Superheros", "Science"]
-//    var descriptions : [String] = ["Math Quiz", "Marvel Superhero Quiz", "Science Quiz"]
     var icons : [String] = ["math", "marvel", "science"]
     var quizNum : Int = -1
-//    var quiz : [[(question: String, answer: Int, answers: [String])]] =
-//        [[(question: "1 + 3 = ?", answer: 0, answers: ["4", "13", "3", "100"]),
-//          (question: "3^2 = ?", answer: 1, answers: ["3", "9", "1", "6"])],
-//         [(question: "What is Thor's hammer's name?", answer: 0, answers: ["Mjolnir", "Thunder Bringer", "Fjordir", "Anduril"])],
-//         [(question: "What is the boiling point of water?", answer: 1, answers: ["21ºF", "212ºF", "300ºF", "45ºF"])]]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return questions!.count
