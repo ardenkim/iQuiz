@@ -41,9 +41,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "setting") {
-            //
-            //
-            //
+            let settingVC: SettingViewController = segue.destination as! SettingViewController
         } else {
             let questionVC: QuestionViewController = segue.destination as! QuestionViewController
             let dict = questions![self.quizNum] as [String:Any]
@@ -56,9 +54,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @IBAction func Settings(_ sender: Any) {
-        let alertController = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
+//        let alertController = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
+//        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//        self.present(alertController, animated: true, completion: nil)
+        performSegue(withIdentifier: "setting", sender: self)
     }
     
     override func viewDidLoad() {
