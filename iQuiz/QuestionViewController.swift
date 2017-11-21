@@ -11,7 +11,10 @@ class QuestionViewController: UIViewController, UITableViewDelegate, UITableView
 
     var quizTitle : String = ""
     var quizDescription : String = ""
-    var quiz = [(question: String, answer: Int, answers: [String])]()
+    var quiz : [Any]?
+    var options : [String]?
+    var correctAnswer = -1;
+    
     var curQuestion = -1
     var correct = 0
     var userAnswer = -1
@@ -25,7 +28,12 @@ class QuestionViewController: UIViewController, UITableViewDelegate, UITableView
 
         quizName.text = quizTitle
         quizDesc.text = quizDescription
-        questionLabel.text = quiz[curQuestion].question
+        
+        let curQuestionObj = quiz![curQuestion] as! [String:Any]
+        options = curQuestionObj["answers"] as! [String]
+        correctAnswer = Int(curQuestionObj["answer"] as! String)! - 1
+        
+        questionLabel.text = curQuestionObj["text"] as! String
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,13 +47,13 @@ class QuestionViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = quiz[curQuestion].answers[indexPath.row]
+        cell.textLabel?.text = options![indexPath.row]
         return cell
     }
     
     @IBAction func submitClicked(_ sender: Any) {
         if userAnswer != -1 {
-            if userAnswer == quiz[curQuestion].answer {
+            if userAnswer == correctAnswer {
                 correct = correct + 1
             }
             performSegue(withIdentifier: "answer", sender: self)
@@ -60,6 +68,7 @@ class QuestionViewController: UIViewController, UITableViewDelegate, UITableView
         answerVC.quiz = self.quiz
         answerVC.correct = self.correct
         answerVC.userAnswer = self.userAnswer
+        answerVC.correctAnswer = self.correctAnswer
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

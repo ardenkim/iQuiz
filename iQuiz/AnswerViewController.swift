@@ -10,11 +10,12 @@ import UIKit
 class AnswerViewController: UIViewController {
     var quizTitle : String = ""
     var quizDescription : String = ""
-    var quiz = [(question: String, answer: Int, answers: [String])]()
+    var quiz : [Any]?
     var curQuestion = -1
     var correct = 0
     var userAnswer = -1
-
+    var correctAnswer = -1
+    
     @IBOutlet weak var quizName: UILabel!
     @IBOutlet weak var quizDesc: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
@@ -24,7 +25,7 @@ class AnswerViewController: UIViewController {
     
     @IBAction func nextClicked(_ sender: Any) {
         curQuestion = curQuestion + 1
-        if curQuestion < quiz.count {
+        if curQuestion < quiz!.count {
             performSegue(withIdentifier: "quiz", sender: self)
         } else {
             performSegue(withIdentifier: "result", sender: self)
@@ -44,7 +45,7 @@ class AnswerViewController: UIViewController {
         } else {
             let finishVC: FinishViewController = segue.destination as! FinishViewController
             finishVC.correct = correct
-            finishVC.total = quiz.count
+            finishVC.total = quiz!.count
         }
     }
     
@@ -53,10 +54,15 @@ class AnswerViewController: UIViewController {
 
         quizName.text = quizTitle
         quizDesc.text = quizDescription
-        questionLabel.text = quiz[curQuestion].question
-        let answerNum = quiz[curQuestion].answer
-        answerLabel.text = quiz[curQuestion].answers[answerNum]
-        if answerNum == userAnswer {
+        
+        
+        let curQuestionObj = quiz![curQuestion] as! [String:Any]
+        let options = curQuestionObj["answers"] as! [String]
+        
+        questionLabel.text = curQuestionObj["text"] as! String
+
+        answerLabel.text = options[correctAnswer]
+        if correctAnswer == userAnswer {
             correctLabel.text = "CORRECT!"
         } else {
             correctLabel.text = "Sorry, you missed it"
