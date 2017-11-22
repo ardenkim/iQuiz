@@ -7,13 +7,13 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
     static let vc = ViewController()
     
     var sourceURL: String = ""
     var questions : [[String:Any]]?
     var selectedQuestionList : [Any]?
-    var icons : [String] = ["math", "marvel", "science"]
+    var icons : [String] = ["science", "marvel", "math"]
     var quizNum : Int = -1
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,7 +27,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let title = dict["title"] as! String
         cell.textLabel!.text = title
         cell.detailTextLabel?.text = dict["desc"] as! String
-        cell.imageView?.image = UIImage(named: title+".png")
+        cell.imageView?.image = UIImage(named: self.icons[indexPath.row])
         return cell
     }
     
@@ -41,7 +41,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "setting") {
-            let settingVC: SettingViewController = segue.destination as! SettingViewController
+            let settingVC = segue.destination
+            settingVC.modalPresentationStyle = UIModalPresentationStyle.popover
+            settingVC.popoverPresentationController?.delegate = self
         } else {
             let questionVC: QuestionViewController = segue.destination as! QuestionViewController
             let dict = questions![self.quizNum] as [String:Any]
@@ -53,11 +55,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
     @IBAction func Settings(_ sender: Any) {
-//        let alertController = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: UIAlertControllerStyle.alert)
-//        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-//        self.present(alertController, animated: true, completion: nil)
         performSegue(withIdentifier: "setting", sender: self)
+    }
+    @IBOutlet weak var newURL: UITextField!
+
+    @IBAction func checkNow(_ sender: Any) {
+        if newURL.text! != "" {
+            QuizJson.quizJson.load(newURL.text!)
+            viewDidLoad()
+        }
     }
     
     override func viewDidLoad() {
@@ -72,6 +83,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Dispose of any resources that can be recreated.
     }
 
-
+    private let refreshControl = UIRefreshControl()
+    
+    @objc
+    func refresh() {
+        refreshControl.beginRefreshing()
+        self.viewDidLoad()
+        self.refreshControl.endRefreshing()
+    }
 }
 
